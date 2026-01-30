@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AP Task</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 24px; }
+    .row { display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin: 10px 0; }
+    input { padding: 10px; font-size: 16px; width: 240px; }
+    .grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; max-width: 520px; }
+    button { padding: 14px 10px; font-size: 16px; }
+    #status { margin: 12px 0; }
+    
+    .keyboard {
+      position: relative;
+      width: min(100%, 560px);   /* 画面幅に合わせて縮む */
+      height: 180px;
+      margin-top: 16px;
+      user-select: none;
+    }
+
+    /* 白鍵：7本。割合で幅を決める */
+    .key.white {
+      position: absolute;
+      bottom: 0;
+      width: calc(100% / 7);
+      height: 180px;
+      background: white;
+      border: 1px solid #333;
+      box-sizing: border-box;
+      border-radius: 0 0 6px 6px;
+      padding: 0;
+      cursor: pointer;
+    }
+
+    /* 白鍵ラベル：下 */
+    .key.white .label {
+      position: absolute;
+      left: 0; right: 0;
+      bottom: 8px;
+      text-align: center;
+      font-size: 14px;
+      color: #111;
+    }
+
+    /* 黒鍵：白鍵幅のだいたい60% */
+    .key.black {
+      position: absolute;
+      top: 0;
+      width: calc((100% / 7) * 0.62);
+      height: 110px;
+      background: #111;
+      color: white;
+      z-index: 2;
+      border: 1px solid #000;
+      border-radius: 0 0 6px 6px;
+      padding: 0;
+      cursor: pointer;
+    }
+
+    /* 黒鍵ラベル：中央 */
+    .key.black .label {
+      position: absolute;
+      left: 0; right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      text-align: center;
+      font-size: 13px;
+      color: #fff;
+    }
+
+    /* 押下ハイライト（JSで付け外し） */
+    .key.pressed.white { background: #d9e8ff; }
+    .key.pressed.black { background: #3a3a3a; }
+
+    /* 触ったときに選択が出ないように */
+    .key { -webkit-tap-highlight-color: transparent; }
+    </style>
+</head>
+<body>
+  <h1>Absolute Pitch Task</h1>
+
+  <div class="row">
+    <label for="subjId"><b>SubjID / Name</b></label>
+    <input id="subjId" type="text" placeholder="例: s01 / Michael" />
+  </div>
+
+  <div class="row">
+    <button id="btnStart">Start</button>
+    <button id="btnDownload" disabled>Download CSV</button>
+  </div>
+
+  <div id="status">Not yet started</div>
+
+  <div id="summary"></div>
+  <canvas id="accChart" style="display:none; width:100%; height:220px;"></canvas>
+  
+  <div class="row">
+    <button id="btnVolPlay" disabled>Volume Check Play</button>
+    <button id="btnVolOK" disabled>Volume OK (Begin)</button>
+  </div>
+
+  <h2>Answer</h2>
+  <div id="keyboard" class="keyboard"></div>
+
+  <script src="task.js" defer></script>
+</body>
+</html>
